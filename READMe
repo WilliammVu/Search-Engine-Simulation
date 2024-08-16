@@ -1,1 +1,24 @@
+C++ program for a mini search engine
 
+Note: 
+- The code is well commented, so this file will only explain the important concepts of the project.
+- The program was written in MacOS, so the file paths and open function (for opening URL) will be different for other operating systems.
+
+In this simulation of a search engine, the IDE's console input and output will be used. There will be a database class 
+and a search result class
+
+The database will consist of 3 parallel txt files:
+One holding a list of common search inquiries, one holding a list of website links that correspond to those inquiries,
+and one holding the titiles of each of those websites. These are called questions.txt , answers.txt , answer_titles.txt respectively.
+These files are parallel to each other. For example, the 36th row of questions.txt would be "Best places to visit in Europe" and 
+the 36th row of answers.txt would be a URL corresponding to that inquiry. In the same way would the 36th row of answer_titles.txt be 
+"Top Places to Visit in Europe"
+
+The search result class will contain the indexes of the three websites that best match the user's search inquiry. 
+With those indexes, you can access the websites' matching search inquiry, URL, and title. 
+
+The algorithm:
+user enters a search inquiry or exits program -> 
+relevant results are displayed ->
+user decides which link to open or exits the selection. They can open as many as they'd like.
+user enters a search inquiry or exits program
