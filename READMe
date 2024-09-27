@@ -1,7 +1,6 @@
 C++ program for a mini search engine
 
 Note: 
-- The code is well commented, so this file will only explain the important concepts of the project.
 - The program was written in MacOS, so the file paths and open function (for opening URL) will be different for other operating systems.
 
 In this simulation of a search engine, the IDE's console input and output will be used. There will be a database class 
