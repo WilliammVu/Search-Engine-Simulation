@@ -1,23 +1,80 @@
-C++ program for a mini search engine
+Search Engine Project Documentation
 
-Note: 
-- The program was written in MacOS, so the file paths and open function (for opening URL) will be different for other operating systems.
+**OVERVIEW**
+This project implements a simple search engine simulation in C++, allowing users to input search queries and receive relevant web results. 
+The program matches user queries against a database of pre-loaded search terms and their corresponding web links, 
+using string matching algorithms to return the best results.
 
-In this simulation of a search engine, the IDE's console input and output will be used. There will be a database class 
-and a search result class
+**FILE STRUCTURE**
+The project relies on three main input files:
 
-The database will consist of 3 parallel txt files:
-One holding a list of common search inquiries, one holding a list of website links that correspond to those inquiries,
-and one holding the titiles of each of those websites. These are called questions.txt , answers.txt , answer_titles.txt respectively.
-These files are parallel to each other. For example, the 36th row of questions.txt would be "Best places to visit in Europe" and 
-the 36th row of answers.txt would be a URL corresponding to that inquiry. In the same way would the 36th row of answer_titles.txt be 
-"Top Places to Visit in Europe"
+questions.txt - Contains common Google search queries, one per line.
+answers.txt - Contains URLs of websites that answer each query.
+answer_titles.txt - Contains the titles of each website in answers.txt.
+The search engine loads these files into vectors for processing and uses them to return search results based on user input.
 
-The search result class will contain the indexes of the three websites that best match the user's search inquiry. 
-With those indexes, you can access the websites' matching search inquiry, URL, and title. 
+**CLASS DESCRIPTIONS**
+class DataBase
+The DataBase class is responsible for loading the data from the input files into vectors for easy access during the search operation.
 
-The algorithm:
-user enters a search inquiry or exits program -> 
-relevant results are displayed ->
-user decides which link to open or exits the selection. They can open as many as they'd like.
-user enters a search inquiry or exits program
+Attributes:
+
+- ifstream questions: Input stream for the search queries file.
+- ifstream answers: Input stream for the URLs file.
+- ifstream answerTitles: Input stream for the titles of URLs.
+- vector<string> qArr: Stores search queries.
+- vector<string> aArr: Stores URLs corresponding to the queries.
+- vector<string> aTitleArr: Stores titles of the URLs.
+- Constructor: Loads the data from the input files into the corresponding vectors, checks for file loading errors, 
+  and ensures all vectors have matching sizes.
+
+class SearchResult
+Represents the results of a search query, containing the indexes of relevant results.
+
+Attributes:
+
+- vector<int> linkIndexes: Stores the indexes of matching search results from qArr.
+
+Methods:
+
+- getLinkIndex(int index): Returns the index of a search result.
+- getSize(): Returns the number of matching results.
+- setLinkIndex(int index, int newValue, vector<int> aArr): Updates a link index.
+- addLinkIndex(int index): Adds a new index to the result set.
+- turnLowercase()
+- This helper function converts a string to lowercase to make search case-insensitive.
+
+countWordsInSentence()
+- This helper function counts the frequency of words in a given sentence, storing the counts in an unordered map.
+
+search()
+- The core search function. It takes a user query, processes it, 
+  and compares it to each entry in the qArr to find the most relevant matches. 
+  The function returns a SearchResult object with up to three matching results.
+
+openURL()
+- A utility function that opens a URL in the user's default browser.
+
+**USAGE**
+Setup: Ensure the following input files are located in the correct directory:
+
+questions.txt
+answers.txt
+answer_titles.txt
+Execution:
+
+Compile and run the program. It prompts the user to input a search query.
+The program compares the query to stored search queries, using word matching to rank the best results.
+The user can select which search result to open in their default web browser.
+Example Search Query:
+
+Input: "What are nice day trip spots in London?"
+Output: The program will display up to 3 matching website titles, allowing the user to open any of the corresponding URLs.
+Error Handling
+The program checks for errors when opening input files.
+If a user inputs an invalid link number, an error message is displayed, and the program prompts the user again.
+
+**Future Improvements**
+Enhanced Ranking: Improve the ranking algorithm to consider more sophisticated natural language processing techniques.
+Dynamic Database Update: Allow for live updates to the database by adding or modifying search queries and URLs without restarting the program.
+File Paths: Modify the file paths to be more flexible and not hardcoded to the developer's machine.
