@@ -255,6 +255,43 @@ void openURL(string url){
     system(command.c_str());
 }
 
+string cleanString(const string& str){
+    //Function Actions:
+    //clear all leading and trailing spaces
+    //clear double spaces between words
+    
+    int firstNonSpace=-1;
+    for(int i=0;i<str.length();++i){
+        if(str[i] != ' '){
+            firstNonSpace = i;
+            break;
+        }
+    } if(firstNonSpace == -1) return string("");
+
+    int lastNonSpace=-1;
+    for(int i=str.length()-1;i>=0;--i){
+        if(str[i] != ' '){
+            lastNonSpace = i;
+            break;
+        }
+    } if(lastNonSpace == -1) return string("");
+    
+    string newStr;
+
+    for(int i=firstNonSpace;i<=lastNonSpace;++i){
+        if(str[i] == ' '){
+            if(newStr[newStr.length()-1] != ' '){
+                newStr += ' ';
+            }
+        }
+        else{
+            newStr += str[i];
+        }
+    }
+
+    return newStr;
+}
+
 //Driver Code
 int main(){
     
