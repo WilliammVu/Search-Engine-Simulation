@@ -1,0 +1,23 @@
+body{
+    font-family: 'Inter', sans-serif;
+}
+
+form{
+    text-align: center;
+}
+
+input[type="text"]{
+    width: 600px;
+    height: 40px;
+
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+
+    font-size: 18px;
+    text-align: left;
+}
+
+h1{
+    text-align: center;
+}
