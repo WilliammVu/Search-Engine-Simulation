@@ -294,64 +294,37 @@ string cleanString(const string& str){
     return newStr;
 }
 
-//Driver Code
 int main(){
-    
-    string searchEntry;
-    while(1){
-        if(searchEntry.length() > 0){
-            searchEntry.clear();
-        }
-        cout << "To end program, enter \"DONE\"" << endl;
-        cout << "Enter your search: ";
-        char c;
-        while(cin.get(c)){
-            if(c == '\n'  &&  searchEntry.length() > 0) break;
-            searchEntry += c;
-        }
-        
-        if(searchEntry == "DONE"){
-            break; //exit from the loop
-        }
-        
-        SearchResult result = search(searchEntry, database.qArr, database.aArr);
-        
-        cout << "\n\n";
-        for(int i=0;i<30;++i)
-            cout << '-';
-        cout << endl << "Results: \n\n";
-        
-        if(result.getSize() == 0){
-            cout << "Your search: " << searchEntry << " did not match any documents" << endl;
-        }
-        else{
-            //print the titles of each website in the search result
-            for(int i=0;i<result.getSize();++i){
-                cout << i+1 << "." << endl;
-                cout << database.aTitleArr[ result.getLinkIndex(i) ] << endl;
+    crow::SimpleApp app;
+    CROW_ROUTE(app, "/search").methods("POST"_method)(
+        [](const crow::request& req) {
+            auto body = crow::json::load(req.body);
+            if (!body || !body.has("query")) {
+                return crow::response(400, "Invalid request format");
             }
-            
-            //the user selects which links they want to open
-            int linkNumber;
-            do{
-                cout << "\nTo exit selection, type -1" << endl;
-                cout << "Enter which link you wish to open: ";
-                cin >> linkNumber;
-                if((linkNumber <= 0  ||  linkNumber > result.getSize()+1)  && linkNumber != -1){
-                    cerr << "INVALID LINK NUMBER. TRY AGAGIN" << endl;
-                    continue;
+
+            std::string query = body["query"].s();
+            SearchResult result = search(query, database.qArr, database.aArr);
+
+            // Format the response as HTML
+            std::ostringstream htmlResponse;
+            htmlResponse << "<html><body>";
+            htmlResponse << "<h2>Search Results:</h2>";
+            if (result.getSize() == 0) {
+                htmlResponse << "<p>No results found for: " << query << "</p>";
+            } else {
+                for (int i = 0; i < result.getSize(); ++i) {
+                    htmlResponse << "<p>" << i + 1 << ". "
+                                 << database.aTitleArr[result.getLinkIndex(i)]
+                                 << " (<a href=\""
+                                 << database.aArr[result.getLinkIndex(i)]
+                                 << "\">Link</a>)</p>";
                 }
-                if(linkNumber == -1){
-                    break;
-                }
-                cout << "Opening link #" << linkNumber << endl;
-                openURL(database.aArr[ result.getLinkIndex(linkNumber-1) ]);
-            }while(linkNumber != -1);
-        }
-        
-        cout << "\n\n\n";
-    }//loop end
-    
-    cout << endl << "Program Finished." << endl;
-    return 0;
+            }
+            htmlResponse << "</body></html>";
+
+            return crow::response(htmlResponse.str());
+        });
+
+    app.port(8080).multithreaded().run();
 }
