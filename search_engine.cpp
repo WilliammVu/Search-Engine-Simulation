@@ -12,7 +12,8 @@ using namespace std;
 
 
 //search_engine.cpp by William Vu
-
+//This file is a simplified version of this project
+//It acts as a standalone "all-in-one" C++ file
 
 
 class DataBase{
